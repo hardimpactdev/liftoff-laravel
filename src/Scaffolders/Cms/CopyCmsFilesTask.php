@@ -23,8 +23,8 @@ class CopyCmsFilesTask extends Task
      */
     public function run(): bool
     {
-        $stubBasePath = __DIR__ . '/../../../resources/stubs/cms';
-        
+        $stubBasePath = __DIR__.'/../../../resources/stubs/cms';
+
         // Define the mapping of stub directories to destination directories
         $mappings = [
             'app/Filament' => app_path('Filament'),
@@ -40,15 +40,17 @@ class CopyCmsFilesTask extends Task
         ];
 
         foreach ($mappings as $stubDir => $destinationDir) {
-            $fromPath = $stubBasePath . '/' . $stubDir;
-            
-            if (!$this->filesystem->exists($fromPath)) {
+            $fromPath = $stubBasePath.'/'.$stubDir;
+
+            if (! $this->filesystem->exists($fromPath)) {
                 $this->info("Skipping {$stubDir} - path does not exist");
+
                 continue;
             }
 
-            if (!$this->copyDirectory($fromPath, $destinationDir, $replacements)) {
+            if (! $this->copyDirectory($fromPath, $destinationDir, $replacements)) {
                 $this->error("Failed to copy {$stubDir} to {$destinationDir}");
+
                 return false;
             }
 
@@ -58,19 +60,21 @@ class CopyCmsFilesTask extends Task
         // Move AdminPanelProvider to the correct location
         $adminPanelProviderSource = app_path('Filament/AdminPanelProvider.php');
         $adminPanelProviderDest = app_path('Providers/Filament/AdminPanelProvider.php');
-        
+
         if ($this->filesystem->exists($adminPanelProviderSource)) {
             $this->filesystem->ensureDirectoryExists(app_path('Providers/Filament'));
-            
-            if (!$this->filesystem->move($adminPanelProviderSource, $adminPanelProviderDest)) {
+
+            if (! $this->filesystem->move($adminPanelProviderSource, $adminPanelProviderDest)) {
                 $this->error('Failed to move AdminPanelProvider to Providers directory');
+
                 return false;
             }
-            
+
             $this->info('Moved AdminPanelProvider to app/Providers/Filament/');
         }
 
         $this->info('CMS files copied successfully.');
+
         return true;
     }
 

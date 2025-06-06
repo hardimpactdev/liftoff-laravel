@@ -27,7 +27,7 @@ class InstallNpmPackagesTask extends Task
         $this->info('Installing npm packages via bun...');
 
         $packages = ['@tailwindcss/forms', '@tailwindcss/typography'];
-        
+
         $process = new Process(array_merge(['bun', 'add', '-D'], $packages), base_path());
         $process->setTimeout(300); // 5 minutes timeout
 
@@ -39,12 +39,14 @@ class InstallNpmPackagesTask extends Task
             $process->run();
         }
 
-        if (!$process->isSuccessful()) {
-            $this->error('Failed to install npm packages: ' . $process->getErrorOutput());
+        if (! $process->isSuccessful()) {
+            $this->error('Failed to install npm packages: '.$process->getErrorOutput());
+
             return false;
         }
 
         $this->info('NPM packages installed successfully.');
+
         return true;
     }
 

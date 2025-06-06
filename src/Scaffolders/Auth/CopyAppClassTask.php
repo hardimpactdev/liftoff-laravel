@@ -23,7 +23,7 @@ class CopyAppClassTask extends Task
      */
     public function run(): bool
     {
-        $from = __DIR__ . '/../../../resources/stubs/app/app/App.php';
+        $from = __DIR__.'/../../../resources/stubs/app/app/App.php';
         $to = app_path('App.php');
 
         $replacements = [
