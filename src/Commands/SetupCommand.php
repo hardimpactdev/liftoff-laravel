@@ -9,7 +9,7 @@ class SetupCommand extends Command
 {
     protected $signature = 'livtoff:setup {type : The type of setup to run (auth, cms, api, multilanguage)}';
 
-    protected $description = 'Scaffold Livtoff features';
+    protected $description = 'Setup Livtoff features';
 
     /**
      * The filesystem instance.
@@ -34,29 +34,29 @@ class SetupCommand extends Command
     {
         $type = $this->argument('type');
 
-        // Get the appropriate scaffolder
-        $scaffolder = $this->resolveScaffolder($type);
+        // Get the appropriate setup
+        $setup = $this->resolveSetup($type);
 
-        if (! $scaffolder) {
-            $this->error("Scaffolder for '{$type}' not found.");
+        if (! $setup) {
+            $this->error("Setup for '{$type}' not found.");
 
             return 1;
         }
 
-        // Pass this command instance to the scaffolder
-        $scaffolder->setCommand($this);
+        // Pass this command instance to the setup
+        $setup->setCommand($this);
 
-        // Run the scaffolder
-        return $scaffolder->scaffold();
+        // Run the setup
+        return $setup->setup();
     }
 
-    protected function resolveScaffolder($type)
+    protected function resolveSetup($type)
     {
-        $scaffolderClass = 'Livtoff\\Laravel\\Scaffolders\\'.ucfirst($type).'Scaffolder';
+        $setupClass = 'Livtoff\\Laravel\\Setup\\Setup'.ucfirst($type);
 
-        if (class_exists($scaffolderClass)) {
-            // Explicitly create the scaffolder with a Filesystem instance
-            return new $scaffolderClass($this->filesystem);
+        if (class_exists($setupClass)) {
+            // Explicitly create the setup with a Filesystem instance
+            return new $setupClass($this->filesystem);
         }
 
         return null;
