@@ -76,12 +76,12 @@ class HandleInertiaRequests extends Middleware
                         'items' => [
                             [
                                 'title' => 'Settings',
-                                'href' => route('profile.edit'),
+                                'href' => route('Controllers.ProfileController.edit'),
                                 'icon' => 'Cog',
                             ],
                             [
                                 'title' => 'Logout',
-                                'href' => route('logout'),
+                                'href' => route('Controllers.LoginController.logout'),
                                 'method' => 'post',
                                 'icon' => 'Logout',
                             ],
