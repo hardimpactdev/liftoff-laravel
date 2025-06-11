@@ -37,12 +37,14 @@ class InstallFilamentComposerPackageTask extends Task
             $process->run();
         }
 
-        if (!$process->isSuccessful()) {
-            $this->error('Failed to install Filament package: ' . $process->getErrorOutput());
+        if (! $process->isSuccessful()) {
+            $this->error('Failed to install Filament package: '.$process->getErrorOutput());
+
             return false;
         }
 
         $this->info('Filament package installed successfully.');
+
         return true;
     }
 

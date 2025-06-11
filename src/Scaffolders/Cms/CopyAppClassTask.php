@@ -23,12 +23,13 @@ class CopyAppClassTask extends Task
      */
     public function run(): bool
     {
-        $from = __DIR__ . '/../../../resources/stubs/app/app/App.php';
+        $from = __DIR__.'/../../../resources/stubs/app/app/App.php';
         $to = app_path('App.php');
 
         // Skip if file already exists (might have been added by auth scaffolder)
         if ($this->filesystem->exists($to)) {
             $this->info('App class already exists.');
+
             return true;
         }
 

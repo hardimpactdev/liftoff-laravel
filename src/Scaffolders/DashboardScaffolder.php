@@ -3,11 +3,6 @@
 namespace Livtoff\Laravel\Scaffolders;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Scaffolders\Auth\AddAuthRoutesTask;
-use Livtoff\Laravel\Scaffolders\Auth\CopyAuthControllersTask;
-use Livtoff\Laravel\Scaffolders\Auth\CopyAuthRequestsTask;
-use Livtoff\Laravel\Scaffolders\Auth\CopyAuthViewsTask;
-use Livtoff\Laravel\Scaffolders\Auth\PublishMigrationsTask;
 
 class DashboardScaffolder extends Scaffolder
 {
