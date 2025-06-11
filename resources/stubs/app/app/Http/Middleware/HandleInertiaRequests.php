@@ -37,7 +37,11 @@ class HandleInertiaRequests extends Middleware
     {
         $data = [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'app' => [
+                'name' => config('app.name'),
+                'timezone' => config('app.timezone'),
+                'locale' => config('app.locale'),
+            ],
             'location' => [
                 'current' => $request->url(),
                 'previous' => $request->headers->get('referer'),
