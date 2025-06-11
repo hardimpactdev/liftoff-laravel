@@ -52,7 +52,7 @@ class HandleInertiaRequests extends Middleware
             'navigation' => [
                 'app' => [
                     'default' => route('Controllers.HomeController.show'),
-                    'logout' => route('logout'),
+                    'logout' => route('Controllers.LoginController.logout'),
                     'settings' => route('profile.edit'),
                     'main' => [
                         'items' => [
