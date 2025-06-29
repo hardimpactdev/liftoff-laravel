@@ -1,12 +1,12 @@
 {
-    "name": "livtoff/laravel",
+    "name": "hardimpactdev/liftoff-laravel",
     "description": "This is my package laravel",
     "keywords": [
-        "Livtoff",
+        "Liftoff",
         "laravel",
         "laravel"
     ],
-    "homepage": "https://github.com/livtoff/laravel",
+    "homepage": "https://github.com/hardimpactdev/liftoff-laravel",
     "license": "MIT",
     "authors": [
         {
@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Livtoff\\Laravel\\": "src/",
-            "Livtoff\\Laravel\\Database\\Factories\\": "database/factories/"
+            "HardImpact\\Liftoff\\Laravel\\": "src/",
+            "HardImpact\\Liftoff\\Laravel\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Livtoff\\Laravel\\Tests\\": "tests/",
+            "HardImpact\\Liftoff\\Laravel\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -62,10 +62,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Livtoff\\Laravel\\LaravelServiceProvider"
+                "HardImpact\\Liftoff\\Laravel\\LaravelServiceProvider"
             ],
             "aliases": {
-                "Laravel": "Livtoff\\Laravel\\Facades\\Laravel"
+                "Laravel": "HardImpact\\Liftoff\\Laravel\\Facades\\Laravel"
             }
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Livtoff\Laravel\Setup;
+namespace HardImpact\Liftoff\Setup;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

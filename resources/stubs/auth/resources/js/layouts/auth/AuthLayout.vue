@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AuthSimpleLayout as AuthLayout } from "@livtoff/ui";
+import { AuthSimpleLayout as AuthLayout } from "@hardimpactdev/liftoff-ui";
 
 defineProps<{
     title?: string;

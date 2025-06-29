@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\MultiLanguage;
+namespace HardImpact\Liftoff\Setup\MultiLanguage;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class UpdateViteConfigAutoImportTask extends Task
 {
@@ -33,9 +33,9 @@ class UpdateViteConfigAutoImportTask extends Task
 
         $content = $this->filesystem->get($filePath);
 
-        // Check if laravel-vue-i18n is already in autoimport
-        if (str_contains($content, '"laravel-vue-i18n"')) {
-            $this->info('laravel-vue-i18n already exists in autoimport configuration');
+        // Check if liftoff-i18n is already in autoimport
+        if (str_contains($content, '"liftoff-i18n"')) {
+            $this->info('liftoff-i18n already exists in autoimport configuration');
 
             return true;
         }
@@ -83,7 +83,7 @@ class UpdateViteConfigAutoImportTask extends Task
                     // Build the new import string (always with a leading comma since we're adding to an existing array)
                     $newImport = '
                 {
-                    "laravel-vue-i18n": ["trans"],
+                    "liftoff-i18n": ["trans"],
                 }';
 
                     // Insert the new import
@@ -95,7 +95,7 @@ class UpdateViteConfigAutoImportTask extends Task
                         return false;
                     }
 
-                    $this->info('Added laravel-vue-i18n to autoimport configuration');
+                    $this->info('Added liftoff-i18n to autoimport configuration');
 
                     return true;
                 }
@@ -112,6 +112,6 @@ class UpdateViteConfigAutoImportTask extends Task
      */
     public function description(): string
     {
-        return 'Adding laravel-vue-i18n to autoimport configuration in vite.config.ts';
+        return 'Adding liftoff-i18n to autoimport configuration in vite.config.ts';
     }
 }

@@ -1,5 +1,5 @@
 <?php
 
-use Livtoff\Laravel\Tests\TestCase;
+use HardImpact\Liftoff\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

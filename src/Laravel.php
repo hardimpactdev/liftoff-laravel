@@ -1,5 +1,5 @@
 <?php
 
-namespace Livtoff\Laravel;
+namespace HardImpact\Liftoff\Laravel;
 
 class Laravel {}

@@ -1,15 +1,15 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\App;
+namespace HardImpact\Liftoff\Setup\App;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Cms\CopyCmsFilesTask;
-use Livtoff\Laravel\Setup\Cms\InstallFilamentComposerPackageTask;
-use Livtoff\Laravel\Setup\Cms\InstallNpmPackagesTask;
-use Livtoff\Laravel\Setup\Cms\RegisterFilamentServiceProviderTask;
-use Livtoff\Laravel\Setup\Cms\RunFilamentBuildCssTask;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Cms\CopyCmsFilesTask;
+use HardImpact\Liftoff\Setup\Cms\InstallFilamentComposerPackageTask;
+use HardImpact\Liftoff\Setup\Cms\InstallNpmPackagesTask;
+use HardImpact\Liftoff\Setup\Cms\RegisterFilamentServiceProviderTask;
+use HardImpact\Liftoff\Setup\Cms\RunFilamentBuildCssTask;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class RunCmsSetupTask extends Task
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\Auth;
+namespace HardImpact\Liftoff\Setup\Auth;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class PublishMigrationsTask extends Task
 {

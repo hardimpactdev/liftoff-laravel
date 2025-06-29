@@ -6,7 +6,7 @@ import {
     InputError,
     TextLink,
     Checkbox,
-} from "@livtoff/ui";
+} from "@hardimpactdev/liftoff-ui";
 import { LoaderCircle } from "lucide-vue-next";
 
 defineProps<{

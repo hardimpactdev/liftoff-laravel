@@ -1,6 +1,6 @@
 <?php
 
-// config for Livtoff/Laravel
+// config for hardimpactdev/liftoff-laravel
 return [
 
 ];

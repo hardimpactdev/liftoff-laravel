@@ -1,6 +1,6 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\Tasks;
+namespace HardImpact\Liftoff\Setup\Tasks;
 
 interface TaskInterface
 {

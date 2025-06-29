@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\MultiLanguage;
+namespace HardImpact\Liftoff\Setup\MultiLanguage;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 use Symfony\Component\Process\Process;
 
 class InstallI18nPackageTask extends Task
@@ -24,9 +24,9 @@ class InstallI18nPackageTask extends Task
      */
     public function run(): bool
     {
-        $this->info('Installing laravel-vue-i18n package via bun...');
+        $this->info('Installing liftoff-i18n package via bun...');
 
-        $process = new Process(['bun', 'add', 'laravel-vue-i18n'], base_path());
+        $process = new Process(['bun', 'add', 'liftoff-i18n'], base_path());
         $process->setTimeout(300); // 5 minutes timeout
 
         if ($this->command) {
@@ -38,12 +38,12 @@ class InstallI18nPackageTask extends Task
         }
 
         if (! $process->isSuccessful()) {
-            $this->error('Failed to install laravel-vue-i18n package: '.$process->getErrorOutput());
+            $this->error('Failed to install liftoff-i18n package: '.$process->getErrorOutput());
 
             return false;
         }
 
-        $this->info('laravel-vue-i18n package installed successfully.');
+        $this->info('liftoff-i18n package installed successfully.');
 
         return true;
     }
@@ -53,6 +53,6 @@ class InstallI18nPackageTask extends Task
      */
     public function description(): string
     {
-        return 'Installing laravel-vue-i18n npm package';
+        return 'Installing liftoff-i18n npm package';
     }
 }

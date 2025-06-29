@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, TextLink } from "@livtoff/ui";
+import { Button, TextLink } from "@hardimpactdev/liftoff-ui";
 import { Head, useForm } from "@inertiajs/vue3";
 import { LoaderCircle } from "lucide-vue-next";
 
@@ -11,7 +11,7 @@ const form = useForm({});
 
 const submit = () => {
     form.submit(
-        Controllers.Auth.EmailVerificationNotificationController.sendNotification(),
+        Controllers.Auth.EmailVerificationNotificationController.sendNotification()
     );
 };
 </script>

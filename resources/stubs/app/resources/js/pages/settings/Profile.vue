@@ -10,7 +10,7 @@ import {
     HeadingSmall,
     AppLayout,
     SettingsLayout,
-} from "@livtoff/ui";
+} from "@hardimpactdev/liftoff-ui";
 import { type BreadcrumbItem, type SharedData, type User } from "@/types";
 
 interface Props {
@@ -85,7 +85,9 @@ const submit = () => {
                         <p class="-mt-4 text-sm text-muted-foreground">
                             Your email address is unverified.
                             <Link
-                                :href="Controllers.Auth.EmailVerificationNotificationController.sendNotification()"
+                                :href="
+                                    Controllers.Auth.EmailVerificationNotificationController.sendNotification()
+                                "
                                 method="post"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

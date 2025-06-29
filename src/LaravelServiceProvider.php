@@ -1,8 +1,8 @@
 <?php
 
-namespace Livtoff\Laravel;
+namespace HardImpact\Liftoff\Laravel;
 
-use Livtoff\Laravel\Commands\SetupCommand;
+use HardImpact\Liftoff\Commands\SetupCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

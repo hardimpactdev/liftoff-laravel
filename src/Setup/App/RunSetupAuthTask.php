@@ -1,11 +1,11 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\App;
+namespace HardImpact\Liftoff\Setup\App;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\SetupAuth;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\SetupAuth;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class RunSetupAuthTask extends Task
 {

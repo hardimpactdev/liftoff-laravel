@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\MultiLanguage;
+namespace HardImpact\Liftoff\Setup\MultiLanguage;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class UpdateViteConfigImportTask extends Task
 {
@@ -32,7 +32,7 @@ class UpdateViteConfigImportTask extends Task
         }
 
         $content = $this->filesystem->get($filePath);
-        $importStatement = 'import i18n from "laravel-vue-i18n/vite";';
+        $importStatement = 'import i18n from "liftoff-i18n/vite";';
 
         // Check if import already exists
         if (str_contains($content, $importStatement)) {
@@ -85,6 +85,6 @@ class UpdateViteConfigImportTask extends Task
      */
     public function description(): string
     {
-        return 'Adding laravel-vue-i18n/vite import to vite.config.ts';
+        return 'Adding liftoff-i18n/vite import to vite.config.ts';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\Tasks;
+namespace HardImpact\Liftoff\Setup\Tasks;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

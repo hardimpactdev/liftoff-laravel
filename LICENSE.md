@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) Livtoff <nick.retel@gmail.com>
+Copyright (c) Liftoff <nick.retel@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,6 +1,6 @@
-# Livtoff Laravel Package
+# Liftoff Laravel Package
 
-This package provides scaffolding commands and utilities for Livtoff applications.
+This package provides scaffolding commands and utilities for Liftoff applications.
 
 ## Creating Setups
 
@@ -9,6 +9,7 @@ Setups are used to automate the setup of various features in a Laravel applicati
 ### Setup Architecture
 
 The setup system consists of:
+
 1. **Setup Class** - Orchestrates the execution of tasks
 2. **Task Classes** - Individual units of work that perform specific operations
 3. **SetupCommand** - Entry point that resolves and runs Setups
@@ -46,11 +47,11 @@ Create a new file `src/Setup/YourFeatureScaffolder.php`:
 ```php
 <?php
 
-namespace Livtoff\Laravel\Setups;
+namespace HardImpact\Liftoff\Setups;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\YourFeature\Task1;
-use Livtoff\Laravel\Setup\YourFeature\Task2;
+use HardImpact\Liftoff\Setup\YourFeature\Task1;
+use HardImpact\Liftoff\Setup\YourFeature\Task2;
 
 class YourFeatureScaffolder extends Setup
 {
@@ -80,6 +81,7 @@ class YourFeatureScaffolder extends Setup
 #### Step 2: Create Task Directory
 
 Create a directory for your tasks:
+
 ```bash
 mkdir src/Setup/YourFeature
 ```
@@ -93,11 +95,11 @@ Each task should extend the base Task class. Here are common task patterns:
 ```php
 <?php
 
-namespace Livtoff\Laravel\Setup\YourFeature;
+namespace HardImpact\Liftoff\Setup\YourFeature;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class YourTask extends Task
 {
@@ -295,6 +297,7 @@ public function run(): bool
 Place your stub files in `resources/stubs/yourfeature/`. The directory structure should mirror where files will be copied in the target application.
 
 Example structure:
+
 ```
 resources/stubs/yourfeature/
 ├── app/
@@ -313,12 +316,13 @@ resources/stubs/yourfeature/
 Once created, your setup will automatically be available through the setup command:
 
 ```bash
-php artisan livtoff:setup yourfeature
+php artisan liftoff:setup yourfeature
 ```
 
 The SetupCommand uses a naming convention to resolve Setups:
-- Command argument: `yourfeature`
-- Resolved class: `Livtoff\Laravel\Setup\YourfeatureScaffolder`
+
+-   Command argument: `yourfeature`
+-   Resolved class: `HardImpact\Liftoff\Setup\YourfeatureScaffolder`
 
 ### Best Practices
 
@@ -332,16 +336,17 @@ The SetupCommand uses a naming convention to resolve Setups:
 
 ### Available Helper Methods in Task Base Class
 
-- `$this->info($message)` - Output info message
-- `$this->error($message)` - Output error message
-- `$this->copyFile($from, $to, $replacements = [])` - Copy single file with replacements
-- `$this->copyDirectory($from, $to, $replacements = [])` - Copy directory recursively with replacements
-- `$this->filesystem` - Access to Laravel's Filesystem instance
-- `$this->command` - Access to the Command instance (if available)
+-   `$this->info($message)` - Output info message
+-   `$this->error($message)` - Output error message
+-   `$this->copyFile($from, $to, $replacements = [])` - Copy single file with replacements
+-   `$this->copyDirectory($from, $to, $replacements = [])` - Copy directory recursively with replacements
+-   `$this->filesystem` - Access to Laravel's Filesystem instance
+-   `$this->command` - Access to the Command instance (if available)
 
 ### Testing Setups
 
 When developing Setups:
+
 1. Test on a fresh Laravel installation
 2. Run the setup multiple times to ensure idempotency
 3. Verify all files are created in the correct locations

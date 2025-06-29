@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Input, Label, InputError } from "@livtoff/ui";
+import { Button, Input, Label, InputError } from "@hardimpactdev/liftoff-ui";
 import { LoaderCircle } from "lucide-vue-next";
 
 const form = useForm({

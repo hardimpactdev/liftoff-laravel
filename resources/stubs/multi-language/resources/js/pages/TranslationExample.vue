@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { useLanguage } from '@livtoff/ui';
+import { useLanguage } from "@hardimpactdev/liftoff-ui";
 
-const { language, updateLanguage } = useLanguage();
-
-console.log(language.value);
-
+const { updateLanguage } = useLanguage();
 </script>
 
 <template>
     <Head title="Home" />
     <Link :href="Controllers.HomeController.show()">Home</Link>
 
-    {{ trans("auth.failed") }}
+    {{ __("auth.failed") }}
 
     <button @click="updateLanguage('nl')">Update Language</button>
 </template>

@@ -1,16 +1,16 @@
 <?php
 
-namespace Livtoff\Laravel\Setup;
+namespace HardImpact\Liftoff\Setup;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\MultiLanguage\CopyExamplePageTask;
-use Livtoff\Laravel\Setup\MultiLanguage\CopyLangDirectoryTask;
-use Livtoff\Laravel\Setup\MultiLanguage\InstallI18nPackageTask;
-use Livtoff\Laravel\Setup\MultiLanguage\UpdateAppTsImportTask;
-use Livtoff\Laravel\Setup\MultiLanguage\UpdateAppTsUseI18nTask;
-use Livtoff\Laravel\Setup\MultiLanguage\UpdateViteConfigAutoImportTask;
-use Livtoff\Laravel\Setup\MultiLanguage\UpdateViteConfigImportTask;
-use Livtoff\Laravel\Setup\MultiLanguage\UpdateViteConfigPluginTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\CopyExamplePageTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\CopyLangDirectoryTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\InstallI18nPackageTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\UpdateAppTsImportTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\UpdateAppTsUseI18nTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\UpdateViteConfigAutoImportTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\UpdateViteConfigImportTask;
+use HardImpact\Liftoff\Setup\MultiLanguage\UpdateViteConfigPluginTask;
 
 class SetupMultilanguage extends Setup
 {

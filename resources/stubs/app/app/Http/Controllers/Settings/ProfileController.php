@@ -19,7 +19,7 @@ class ProfileController extends Controller
     /**
      * Show the user's profile settings page.
      */
-    #[Get(uri: '/settings/profile', name: 'profile.edit', middleware: 'auth')]
+    #[Get(uri: '/settings/profile', middleware: 'auth')]
     public function edit(Request $request): Response
     {
         return Inertia::render('settings/Profile', [
@@ -31,7 +31,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    #[Patch(uri: '/settings/profile', name: 'profile.update', middleware: 'auth')]
+    #[Patch(uri: '/settings/profile', middleware: 'auth')]
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()?->fill($request->validated());
@@ -48,7 +48,7 @@ class ProfileController extends Controller
     /**
      * Delete the user's profile.
      */
-    #[Delete(uri: '/settings/profile', name: 'profile.destroy', middleware: 'auth')]
+    #[Delete(uri: '/settings/profile', middleware: 'auth')]
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([

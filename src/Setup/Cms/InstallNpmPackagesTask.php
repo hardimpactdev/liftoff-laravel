@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\Cms;
+namespace HardImpact\Liftoff\Setup\Cms;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 use Symfony\Component\Process\Process;
 
 class InstallNpmPackagesTask extends Task

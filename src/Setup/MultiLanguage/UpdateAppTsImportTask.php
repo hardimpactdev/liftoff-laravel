@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\MultiLanguage;
+namespace HardImpact\Liftoff\Setup\MultiLanguage;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class UpdateAppTsImportTask extends Task
 {
@@ -32,7 +32,7 @@ class UpdateAppTsImportTask extends Task
         }
 
         $content = $this->filesystem->get($filePath);
-        $importStatement = 'import { i18n } from "@livtoff/ui";';
+        $importStatement = 'import { i18n } from "@hardimpactdev/liftoff-ui";';
 
         // Check if import already exists
         if (str_contains($content, $importStatement)) {

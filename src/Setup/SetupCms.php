@@ -1,16 +1,16 @@
 <?php
 
-namespace Livtoff\Laravel\Setup;
+namespace HardImpact\Liftoff\Setup;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Cms\CopyAppClassTask;
-use Livtoff\Laravel\Setup\Cms\CopyCmsFilesTask;
-use Livtoff\Laravel\Setup\Cms\InstallFilamentComposerPackageTask;
-use Livtoff\Laravel\Setup\Cms\InstallNpmPackagesTask;
-use Livtoff\Laravel\Setup\Cms\RegisterFilamentServiceProviderTask;
-use Livtoff\Laravel\Setup\Cms\RunFilamentBuildCssTask;
-use Livtoff\Laravel\Setup\Cms\RunSetupAuthTask;
-use Livtoff\Laravel\Setup\Tasks\GenerateRoutesTask;
+use HardImpact\Liftoff\Setup\Cms\CopyAppClassTask;
+use HardImpact\Liftoff\Setup\Cms\CopyCmsFilesTask;
+use HardImpact\Liftoff\Setup\Cms\InstallFilamentComposerPackageTask;
+use HardImpact\Liftoff\Setup\Cms\InstallNpmPackagesTask;
+use HardImpact\Liftoff\Setup\Cms\RegisterFilamentServiceProviderTask;
+use HardImpact\Liftoff\Setup\Cms\RunFilamentBuildCssTask;
+use HardImpact\Liftoff\Setup\Cms\RunSetupAuthTask;
+use HardImpact\Liftoff\Setup\Tasks\GenerateRoutesTask;
 
 class SetupCms extends Setup
 {

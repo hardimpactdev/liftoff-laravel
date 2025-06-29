@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { Button, Input, Label, InputError, TextLink } from "@livtoff/ui";
+import {
+    Button,
+    Input,
+    Label,
+    InputError,
+    TextLink,
+} from "@hardimpactdev/liftoff-ui";
 import { LoaderCircle } from "lucide-vue-next";
 
 defineProps<{

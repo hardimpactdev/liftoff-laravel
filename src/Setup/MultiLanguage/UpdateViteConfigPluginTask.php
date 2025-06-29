@@ -1,10 +1,10 @@
 <?php
 
-namespace Livtoff\Laravel\Setup\MultiLanguage;
+namespace HardImpact\Liftoff\Setup\MultiLanguage;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Tasks\Task;
+use HardImpact\Liftoff\Setup\Tasks\Task;
 
 class UpdateViteConfigPluginTask extends Task
 {

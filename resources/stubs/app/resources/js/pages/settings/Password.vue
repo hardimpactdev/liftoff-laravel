@@ -7,7 +7,7 @@ import {
     Label,
     SettingsLayout,
     AppLayout,
-} from "@livtoff/ui";
+} from "@hardimpactdev/liftoff-ui";
 import { ref } from "vue";
 import { type BreadcrumbItem } from "@/types";
 

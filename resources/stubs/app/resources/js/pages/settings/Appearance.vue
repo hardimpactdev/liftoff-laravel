@@ -4,7 +4,7 @@ import {
     AppearanceTabs,
     AppLayout,
     SettingsLayout,
-} from "@livtoff/ui";
+} from "@hardimpactdev/liftoff-ui";
 import { type BreadcrumbItem } from "@/types";
 
 const breadcrumbItems: BreadcrumbItem[] = [

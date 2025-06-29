@@ -1,11 +1,11 @@
-# Livtoff Laravel Package
+# Liftoff Laravel Package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/livtoff/laravel.svg?style=flat-square)](https://packagist.org/packages/livtoff/laravel)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/livtoff/laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/livtoff/laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/livtoff/laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/livtoff/laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/livtoff/laravel.svg?style=flat-square)](https://packagist.org/packages/livtoff/laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/hardimpactdev/liftoff-laravel.svg?style=flat-square)](https://packagist.org/packages/hardimpactdev/liftoff-laravel)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/hardimpactdev/liftoff-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/hardimpactdev/liftoff-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/hardimpactdev/liftoff-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/hardimpactdev/liftoff-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/hardimpactdev/liftoff-laravel.svg?style=flat-square)](https://packagist.org/packages/hardimpactdev/liftoff-laravel)
 
-The Livtoff Laravel package provides scaffolding commands and utilities for rapidly setting up Laravel applications with Vue.js, Inertia.js, and optional Filament CMS integration. It includes pre-built authentication, dashboard, settings, and CMS functionality.
+The Liftoff Laravel package provides scaffolding commands and utilities for rapidly setting up Laravel applications with Vue.js, Inertia.js, and optional Filament CMS integration. It includes pre-built authentication, dashboard, settings, and CMS functionality.
 
 ## Support us
 
@@ -17,16 +17,16 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 
 ## Requirements
 
-- PHP 8.1 or higher
-- Laravel 10.x or 11.x
-- Node.js and npm/bun for frontend assets
+-   PHP 8.1 or higher
+-   Laravel 10.x or 11.x
+-   Node.js and npm/bun for frontend assets
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require livtoff/laravel
+composer require hardimpactdev/liftoff-laravel
 ```
 
 ## Scaffolders
@@ -36,54 +36,60 @@ The package provides powerful scaffolding commands to quickly set up different a
 ### Available Scaffolders
 
 #### 1. App Scaffolder (Full Application Setup)
+
 The most comprehensive scaffolder that sets up a complete application with authentication and CMS functionality.
 
 ```bash
-php artisan livtoff:setup app
+php artisan liftoff:setup app
 ```
 
 This scaffolder includes:
-- ✅ App class with redirect configuration
-- ✅ Dashboard controller and views
-- ✅ Settings pages (profile, password, appearance)
-- ✅ HandleInertiaRequests middleware
-- ✅ TypeScript type definitions
-- ✅ Feature tests
-- ✅ Full authentication system (runs Auth scaffolder)
-- ✅ Filament CMS integration (runs CMS scaffolder)
-- ✅ Automatic route generation
+
+-   ✅ App class with redirect configuration
+-   ✅ Dashboard controller and views
+-   ✅ Settings pages (profile, password, appearance)
+-   ✅ HandleInertiaRequests middleware
+-   ✅ TypeScript type definitions
+-   ✅ Feature tests
+-   ✅ Full authentication system (runs Auth scaffolder)
+-   ✅ Filament CMS integration (runs CMS scaffolder)
+-   ✅ Automatic route generation
 
 #### 2. Auth Scaffolder
+
 Sets up a complete authentication system with login, registration, password reset, and email verification.
 
 ```bash
-php artisan livtoff:setup auth
+php artisan liftoff:setup auth
 ```
 
 This scaffolder includes:
-- ✅ Authentication controllers with route attributes
-- ✅ Login request validation
-- ✅ Vue.js authentication pages
-- ✅ Authentication tests
-- ✅ User migration publishing
+
+-   ✅ Authentication controllers with route attributes
+-   ✅ Login request validation
+-   ✅ Vue.js authentication pages
+-   ✅ Authentication tests
+-   ✅ User migration publishing
 
 **Note:** The auth scaffolder requires the App class to be present. If running standalone, ensure you have an App class or run the app scaffolder instead.
 
 #### 3. CMS Scaffolder
+
 Sets up Filament CMS with user management and authentication.
 
 ```bash
-php artisan livtoff:setup cms
+php artisan liftoff:setup cms
 ```
 
 This scaffolder includes:
-- ✅ App class with redirect configuration
-- ✅ Full authentication system (runs Auth scaffolder)
-- ✅ Filament package installation
-- ✅ User resource for managing users
-- ✅ Admin panel configuration
-- ✅ Filament CSS build process
-- ✅ Automatic route generation
+
+-   ✅ App class with redirect configuration
+-   ✅ Full authentication system (runs Auth scaffolder)
+-   ✅ Filament package installation
+-   ✅ User resource for managing users
+-   ✅ Admin panel configuration
+-   ✅ Filament CSS build process
+-   ✅ Automatic route generation
 
 ### Route Generation
 
@@ -92,6 +98,7 @@ All scaffolders use the route-maker package to automatically generate routes fro
 ### Files and Directories Created
 
 #### App Scaffolder creates:
+
 ```
 app/
 ├── App.php
@@ -124,6 +131,7 @@ tests/Feature/
 ```
 
 #### Auth Scaffolder creates:
+
 ```
 app/Http/
 ├── Controllers/Auth/
@@ -158,12 +166,13 @@ tests/Feature/Auth/
 ### Usage Examples
 
 #### Quick Start - Full Application
+
 ```bash
 # Install the package
-composer require livtoff/laravel
+composer require hardimpactdev/liftoff-laravel
 
 # Run the app scaffolder for a complete setup
-php artisan livtoff:setup app
+php artisan liftoff:setup app
 
 # Install frontend dependencies
 npm install # or bun install
@@ -176,17 +185,19 @@ npm run dev # or bun dev
 ```
 
 #### Authentication Only
+
 ```bash
 # Run just the auth scaffolder
-php artisan livtoff:setup auth
+php artisan liftoff:setup auth
 
 # Note: Requires App class to be present
 ```
 
 #### CMS with Authentication
+
 ```bash
 # Run the CMS scaffolder (includes auth)
-php artisan livtoff:setup cms
+php artisan liftoff:setup cms
 
 # Create a Filament user
 php artisan make:filament-user
@@ -203,9 +214,9 @@ php artisan make:filament-user
 4. **File Merging**: When copying directories, existing files are preserved unless they have the same name as files being copied.
 
 5. **Dependencies**: Make sure to install the route-maker package if not already installed:
-   ```bash
-   composer require nckrtl/route-maker
-   ```
+    ```bash
+    composer require nckrtl/route-maker
+    ```
 
 ## Testing
 
@@ -227,8 +238,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [nckrtl](https://github.com/nckrtl)
-- [All Contributors](../../contributors)
+-   [nckrtl](https://github.com/nckrtl)
+-   [All Contributors](../../contributors)
 
 ## License
 

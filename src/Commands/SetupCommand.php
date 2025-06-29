@@ -1,15 +1,15 @@
 <?php
 
-namespace Livtoff\Laravel\Commands;
+namespace HardImpact\Liftoff\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 class SetupCommand extends Command
 {
-    protected $signature = 'livtoff:setup {type : The type of setup to run (auth, cms, api, multilanguage)}';
+    protected $signature = 'liftoff:setup {type : The type of setup to run (auth, cms, api, multilanguage)}';
 
-    protected $description = 'Setup Livtoff features';
+    protected $description = 'Setup Liftoff features';
 
     /**
      * The filesystem instance.
@@ -52,7 +52,7 @@ class SetupCommand extends Command
 
     protected function resolveSetup($type)
     {
-        $setupClass = 'Livtoff\\Laravel\\Setup\\Setup'.ucfirst($type);
+        $setupClass = 'HardImpact\\Liftoff\\Laravel\\Setup\\Setup'.ucfirst($type);
 
         if (class_exists($setupClass)) {
             // Explicitly create the setup with a Filesystem instance

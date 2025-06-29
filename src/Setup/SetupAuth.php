@@ -1,13 +1,13 @@
 <?php
 
-namespace Livtoff\Laravel\Setup;
+namespace HardImpact\Liftoff\Setup;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\Auth\CopyAuthControllersTask;
-use Livtoff\Laravel\Setup\Auth\CopyAuthRequestsTask;
-use Livtoff\Laravel\Setup\Auth\CopyAuthTestsTask;
-use Livtoff\Laravel\Setup\Auth\CopyAuthViewsTask;
-use Livtoff\Laravel\Setup\Auth\PublishMigrationsTask;
+use HardImpact\Liftoff\Setup\Auth\CopyAuthControllersTask;
+use HardImpact\Liftoff\Setup\Auth\CopyAuthRequestsTask;
+use HardImpact\Liftoff\Setup\Auth\CopyAuthTestsTask;
+use HardImpact\Liftoff\Setup\Auth\CopyAuthViewsTask;
+use HardImpact\Liftoff\Setup\Auth\PublishMigrationsTask;
 
 class SetupAuth extends Setup
 {

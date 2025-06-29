@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AppLayout, PlaceholderPattern } from "@livtoff/ui";
+import { AppLayout, PlaceholderPattern } from "@hardimpactdev/liftoff-ui";
 import { type BreadcrumbItem } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [

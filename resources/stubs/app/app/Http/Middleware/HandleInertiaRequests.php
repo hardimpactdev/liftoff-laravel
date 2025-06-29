@@ -52,8 +52,8 @@ class HandleInertiaRequests extends Middleware
             'navigation' => [
                 'app' => [
                     'default' => route('Controllers.HomeController.show'),
-                    'logout' => route('Controllers.LoginController.logout'),
-                    'settings' => route('profile.edit'),
+                    'logout' => route('Controllers.Auth.LoginController.logout'),
+                    'settings' => route('Controllers.Settings.ProfileController.edit'),
                     'main' => [
                         'items' => [
                             [
@@ -76,12 +76,12 @@ class HandleInertiaRequests extends Middleware
                         'items' => [
                             [
                                 'title' => 'Settings',
-                                'href' => route('Controllers.ProfileController.edit'),
+                                'href' => route('Controllers.Settings.ProfileController.edit'),
                                 'icon' => 'Cog',
                             ],
                             [
                                 'title' => 'Logout',
-                                'href' => route('Controllers.LoginController.logout'),
+                                'href' => route('Controllers.Auth.LoginController.logout'),
                                 'method' => 'post',
                                 'icon' => 'Logout',
                             ],

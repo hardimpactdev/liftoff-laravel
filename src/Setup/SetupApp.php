@@ -1,17 +1,17 @@
 <?php
 
-namespace Livtoff\Laravel\Setup;
+namespace HardImpact\Liftoff\Setup;
 
 use Illuminate\Filesystem\Filesystem;
-use Livtoff\Laravel\Setup\App\CopyAppClassTask;
-use Livtoff\Laravel\Setup\App\CopyAppControllersTask;
-use Livtoff\Laravel\Setup\App\CopyAppMiddlewareTask;
-use Livtoff\Laravel\Setup\App\CopyAppRequestsTask;
-use Livtoff\Laravel\Setup\App\CopyAppTestsTask;
-use Livtoff\Laravel\Setup\App\CopyAppViewsTask;
-use Livtoff\Laravel\Setup\App\RunCmsSetupTask;
-use Livtoff\Laravel\Setup\App\RunSetupAuthTask;
-use Livtoff\Laravel\Setup\Tasks\GenerateRoutesTask;
+use HardImpact\Liftoff\Setup\App\CopyAppClassTask;
+use HardImpact\Liftoff\Setup\App\CopyAppControllersTask;
+use HardImpact\Liftoff\Setup\App\CopyAppMiddlewareTask;
+use HardImpact\Liftoff\Setup\App\CopyAppRequestsTask;
+use HardImpact\Liftoff\Setup\App\CopyAppTestsTask;
+use HardImpact\Liftoff\Setup\App\CopyAppViewsTask;
+use HardImpact\Liftoff\Setup\App\RunCmsSetupTask;
+use HardImpact\Liftoff\Setup\App\RunSetupAuthTask;
+use HardImpact\Liftoff\Setup\Tasks\GenerateRoutesTask;
 
 class SetupApp extends Setup
 {
