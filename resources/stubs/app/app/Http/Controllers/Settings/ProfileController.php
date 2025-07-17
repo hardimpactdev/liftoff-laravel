@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use NckRtl\RouteMaker\Delete;
-use NckRtl\RouteMaker\Get;
-use NckRtl\RouteMaker\Patch;
+use HardImpact\Waymaker\Delete;
+use HardImpact\Waymaker\Get;
+use HardImpact\Waymaker\Patch;
 
 class ProfileController extends Controller
 {

@@ -31,7 +31,7 @@ composer require hardimpactdev/liftoff-laravel
 
 ## Scaffolders
 
-The package provides powerful scaffolding commands to quickly set up different aspects of your application. All scaffolders automatically generate routes using the route-maker package.
+The package provides powerful scaffolding commands to quickly set up different aspects of your application. All scaffolders automatically generate routes using the waymaker package.
 
 ### Available Scaffolders
 
@@ -93,7 +93,7 @@ This scaffolder includes:
 
 ### Route Generation
 
-All scaffolders use the route-maker package to automatically generate routes from controller attributes. Routes are generated at the end of each scaffolding process, eliminating the need to manually run `php artisan route-maker:make`.
+All scaffolders use the waymaker package to automatically generate routes from controller attributes. Routes are generated at the end of each scaffolding process, eliminating the need to manually run `php artisan waymaker:generate`.
 
 ### Files and Directories Created
 
@@ -207,15 +207,15 @@ php artisan make:filament-user
 
 1. **Middleware Replacement**: The HandleInertiaRequests middleware will be replaced if it already exists in your application.
 
-2. **Route Attributes**: All controllers use route attributes from the route-maker package, eliminating the need for manual route definitions.
+2. **Route Attributes**: All controllers use route attributes from the waymaker package, eliminating the need for manual route definitions.
 
 3. **App Class**: The App class provides a centralized location for application configuration, including login redirect routes.
 
 4. **File Merging**: When copying directories, existing files are preserved unless they have the same name as files being copied.
 
-5. **Dependencies**: Make sure to install the route-maker package if not already installed:
+5. **Dependencies**: Make sure to install the waymaker package if not already installed:
     ```bash
-    composer require nckrtl/route-maker
+    composer require nckrtl/waymaker
     ```
 
 ## Testing

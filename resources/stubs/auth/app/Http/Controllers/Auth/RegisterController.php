@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
-use NckRtl\RouteMaker\Get;
-use NckRtl\RouteMaker\Post;
+use HardImpact\Waymaker\Get;
+use HardImpact\Waymaker\Post;
 
 class RegisterController extends Controller
 {

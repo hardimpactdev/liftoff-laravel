@@ -26,8 +26,8 @@ class GenerateRoutesTask extends Task
         $this->info('Generating routes from controller attributes...');
 
         try {
-            // Run the route-maker:make command
-            $exitCode = Artisan::call('route-maker:make', [], $this->command ? $this->command->getOutput() : null);
+            // Run the waymaker:generate command
+            $exitCode = Artisan::call('waymaker:generate', [], $this->command ? $this->command->getOutput() : null);
 
             if ($exitCode === 0) {
                 $this->info('Routes generated successfully.');

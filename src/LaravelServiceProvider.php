@@ -1,6 +1,6 @@
 <?php
 
-namespace HardImpact\Liftoff\Laravel;
+namespace HardImpact\Liftoff;
 
 use HardImpact\Liftoff\Commands\SetupCommand;
 use Spatie\LaravelPackageTools\Package;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use NckRtl\RouteMaker\Get;
+use HardImpact\Waymaker\Get;
 
 class DashboardController extends Controller
 {

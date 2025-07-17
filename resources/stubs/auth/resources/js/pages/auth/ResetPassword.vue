@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Input, Label, InputError } from "@hardimpactdev/liftoff-ui";
+import { Button, Input, Label, InputError } from "@hardimpactdev/liftoff-vue";
 import { LoaderCircle } from "lucide-vue-next";
 
 interface Props {

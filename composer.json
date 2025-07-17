@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "HardImpact\\Liftoff\\Laravel\\": "src/",
-            "HardImpact\\Liftoff\\Laravel\\Database\\Factories\\": "database/factories/"
+            "HardImpact\\Liftoff\\": "src/",
+            "HardImpact\\Liftoff\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "HardImpact\\Liftoff\\Laravel\\Tests\\": "tests/",
+            "HardImpact\\Liftoff\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -62,10 +62,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "HardImpact\\Liftoff\\Laravel\\LaravelServiceProvider"
+                "HardImpact\\Liftoff\\LaravelServiceProvider"
             ],
             "aliases": {
-                "Laravel": "HardImpact\\Liftoff\\Laravel\\Facades\\Laravel"
+                "Laravel": "HardImpact\\Liftoff\\Facades\\Laravel"
             }
         }
     },

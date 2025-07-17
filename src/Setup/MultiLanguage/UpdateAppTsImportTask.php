@@ -32,7 +32,7 @@ class UpdateAppTsImportTask extends Task
         }
 
         $content = $this->filesystem->get($filePath);
-        $importStatement = 'import { i18n } from "@hardimpactdev/liftoff-ui";';
+        $importStatement = 'import { i18n } from "@hardimpactdev/liftoff-vue";';
 
         // Check if import already exists
         if (str_contains($content, $importStatement)) {

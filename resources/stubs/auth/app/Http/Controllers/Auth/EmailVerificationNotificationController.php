@@ -6,7 +6,7 @@ use App\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use NckRtl\RouteMaker\Post;
+use HardImpact\Waymaker\Post;
 
 class EmailVerificationNotificationController extends Controller
 {

@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
-use NckRtl\RouteMaker\Get;
-use NckRtl\RouteMaker\Put;
+use HardImpact\Waymaker\Get;
+use HardImpact\Waymaker\Put;
 
 class PasswordController extends Controller
 {

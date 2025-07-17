@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, TextLink } from "@hardimpactdev/liftoff-ui";
+import { Button, TextLink } from "@hardimpactdev/liftoff-vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { LoaderCircle } from "lucide-vue-next";
 
