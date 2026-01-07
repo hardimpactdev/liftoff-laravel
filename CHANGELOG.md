@@ -1,3 +1,36 @@
 # Changelog
 
 All notable changes to `Laravel` will be documented in this file.
+
+## v0.1.0 - Initial Release - 2026-01-07
+
+### Initial Release
+
+First tagged release of liftoff-laravel, the scaffolding companion package for liftoff-starterkit.
+
+#### Features
+
+- **Modular Setup System**: Run individual setups as needed
+  - `liftoff:setup auth` - Add authentication
+  - `liftoff:setup dashboard` - Add dashboard + settings pages
+  - `liftoff:setup app` - Full app (auth + dashboard combined)
+  - `liftoff:setup cms` - Add Filament CMS
+  - `liftoff:setup multilanguage` - Add language files
+  
+
+#### Bug Fixes
+
+- Fixed namespace resolution in SetupCommand
+- Fixed `scaffold()` → `setup()` method call in CMS auth task
+- Renamed task file to match class name (RunSetupAuthTask)
+
+#### Compatibility
+
+- Aligned with liftoff-starterkit's current state
+- Removed redundant vite i18n config tasks (already in starterkit)
+- Added `language` field to User type stub
+- SetupApp no longer forces CMS installation
+
+#### Breaking Changes
+
+- `liftoff:setup app` no longer includes CMS - run `liftoff:setup cms` separately if needed
