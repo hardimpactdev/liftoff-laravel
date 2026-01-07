@@ -1,0 +1,355 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'resources/stubs/**'
+      - '.github/workflows/integration-tests.yml'
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-auth:
+    name: Test Auth Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Configure composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run auth setup
+        working-directory: starterkit
+        run: php artisan liftoff:setup auth
+
+      - name: Verify auth files
+        working-directory: starterkit
+        run: |
+          test -f app/Http/Controllers/Auth/LoginController.php
+          test -f app/Http/Controllers/Auth/RegisterController.php
+          test -f app/Http/Requests/Auth/LoginRequest.php
+          test -f resources/js/pages/auth/Login.vue
+          test -f resources/js/pages/auth/Register.vue
+          test -f tests/Feature/Auth/AuthenticationTest.php
+          echo "All auth files verified!"
+
+  test-dashboard:
+    name: Test Dashboard Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Configure composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run dashboard setup
+        working-directory: starterkit
+        run: php artisan liftoff:setup dashboard
+
+      - name: Verify dashboard files
+        working-directory: starterkit
+        run: |
+          test -f app/Http/Controllers/DashboardController.php
+          test -f app/Http/Controllers/Settings/ProfileController.php
+          test -f resources/js/pages/Dashboard.vue
+          test -f resources/js/pages/settings/Profile.vue
+          test -f tests/Feature/DashboardTest.php
+          echo "All dashboard files verified!"
+
+  test-app:
+    name: Test App Setup (Auth + Dashboard)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Configure composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run app setup
+        working-directory: starterkit
+        run: php artisan liftoff:setup app
+
+      - name: Verify app files (auth + dashboard)
+        working-directory: starterkit
+        run: |
+          test -f app/Http/Controllers/Auth/LoginController.php
+          test -f app/Http/Requests/Auth/LoginRequest.php
+          test -f resources/js/pages/auth/Login.vue
+          test -f app/Http/Controllers/DashboardController.php
+          test -f resources/js/pages/Dashboard.vue
+          test -f resources/js/pages/settings/Profile.vue
+          echo "All app files verified!"
+
+  test-cms:
+    name: Test CMS Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Configure composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run cms setup
+        working-directory: starterkit
+        run: php artisan liftoff:setup cms
+
+      - name: Verify cms files
+        working-directory: starterkit
+        run: |
+          test -d app/Filament
+          test -f app/Providers/Filament/AdminPanelProvider.php
+          test -d resources/css/filament
+          grep -q "AdminPanelProvider" bootstrap/providers.php
+          echo "All CMS files verified!"
+
+  test-multilanguage:
+    name: Test Multilanguage Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Configure composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run multilanguage setup
+        working-directory: starterkit
+        run: php artisan liftoff:setup multilanguage
+
+      - name: Verify multilanguage files
+        working-directory: starterkit
+        run: |
+          test -d lang/en
+          test -d lang/nl
+          test -f lang/en/auth.php
+          test -f lang/nl/auth.php
+          test -f resources/js/pages/TranslationExample.vue
+          echo "All multilanguage files verified!"

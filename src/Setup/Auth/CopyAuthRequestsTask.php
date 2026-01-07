@@ -23,7 +23,7 @@ class CopyAuthRequestsTask extends Task
      */
     public function run(): bool
     {
-        $stubPath = __DIR__.'/../../../resources/stubs/auth/app/Http/Requests';
+        $stubPath = __DIR__.'/../../../resources/stubs/auth/app/Http/Requests/Auth';
         $destinationPath = app_path('Http/Requests/Auth');
 
         $replacements = [
