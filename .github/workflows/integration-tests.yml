@@ -9,6 +9,7 @@ on:
       - '.github/workflows/integration-tests.yml'
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
