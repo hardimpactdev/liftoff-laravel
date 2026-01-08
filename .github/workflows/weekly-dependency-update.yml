@@ -5,17 +5,6 @@ on:
     # Run every Sunday at midnight UTC
     - cron: '0 0 * * 0'
   workflow_dispatch:
-    inputs:
-      create_pr:
-        description: 'Create PR with updates'
-        required: false
-        default: true
-        type: boolean
-      auto_merge:
-        description: 'Auto-merge PR if all tests pass'
-        required: false
-        default: true
-        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,6 +20,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       has_changes: ${{ steps.check_changes.outputs.has_changes }}
+      updated_packages: ${{ steps.check_changes.outputs.updated_packages }}
       branch_name: ${{ steps.commit.outputs.branch_name }}
 
     steps:
@@ -83,8 +73,15 @@ jobs:
           else
             echo "Changes detected in composer.lock"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+
+            # Capture updated packages for notifications
+            UPDATED=$(composer show --latest 2>/dev/null | grep -E '^\S+\s+\S+\s+\S+' | head -10 || echo "See workflow logs")
+            echo "updated_packages<<EOF" >> $GITHUB_OUTPUT
+            echo "$UPDATED" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
             echo "### Updated Packages" >> $GITHUB_STEP_SUMMARY
-            composer show --latest | grep -E '^\S+\s+\S+\s+\S+' | head -20 >> $GITHUB_STEP_SUMMARY || true
+            echo "$UPDATED" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Configure git
@@ -93,7 +90,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit changes
+      - name: Commit changes to temp branch
         id: commit
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
@@ -121,6 +118,7 @@ jobs:
         with:
           ref: ${{ needs.update-dependencies.outputs.branch_name }}
           path: liftoff-laravel
+          token: ${{ secrets.GH_PAT }}
 
       - name: Checkout liftoff-starterkit
         uses: actions/checkout@v4
@@ -248,14 +246,13 @@ jobs:
             echo "No test runner found, skipping tests"
           fi
 
-  create-pull-request:
-    name: Create and Auto-merge Pull Request
+  merge-to-main:
+    name: Merge to Main
     needs: [update-dependencies, test-starterkit-integration]
     if: |
       always() &&
       needs.update-dependencies.outputs.has_changes == 'true' &&
-      needs.test-starterkit-integration.result == 'success' &&
-      (github.event_name == 'schedule' || github.event.inputs.create_pr == 'true')
+      needs.test-starterkit-integration.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -263,75 +260,172 @@ jobs:
       - name: Checkout liftoff-laravel
         uses: actions/checkout@v4
         with:
+          ref: main
+          fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
 
-      - name: Create Pull Request
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge dependency updates to main
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
           BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
         run: |
-          PR_BODY=$(cat <<'EOF'
-          ## Weekly Dependency Update
+          git fetch origin
 
-          This PR contains the weekly automated update of Composer dependencies.
+          echo "Merging $BRANCH_NAME into main..."
 
-          ### What's included
-          - Updated `composer.lock` with latest compatible versions
-          - All unit tests passing
-          - Static analysis passing
-          - Starterkit integration tests passing
-          - Homepage rendering verified
+          # Merge with squash to keep history clean
+          git merge --squash "origin/$BRANCH_NAME"
+          git commit -m "chore(deps): weekly dependency update ($(date +%Y-%m-%d))
 
-          ### Testing performed
-          - [x] Unit tests (`pest --ci`)
-          - [x] Static analysis (`phpstan`)
-          - [x] Starterkit setup (auth + dashboard)
-          - [x] Frontend build (`bun run build`)
-          - [x] Homepage HTTP 200 response
+          Automated weekly update of Composer dependencies.
 
-          ---
-          *This PR was automatically created by the weekly dependency update workflow.*
-          EOF
-          )
+          All tests passed:
+          - Unit tests (pest)
+          - Static analysis (phpstan)
+          - Starterkit integration
+          - Frontend build
+          - Homepage rendering
 
-          PR_URL=$(gh pr create \
-            --base main \
-            --head "$BRANCH_NAME" \
-            --title "chore(deps): weekly dependency update ($(date +%Y-%m-%d))" \
-            --body "$PR_BODY" \
-            --label "dependencies")
+          Updated on: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          echo "Created PR: $PR_URL"
-          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          git push origin main
 
-      - name: Enable auto-merge
-        if: github.event_name == 'schedule' || github.event.inputs.auto_merge == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-          BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
-        run: |
-          echo "Enabling auto-merge for PR..."
-          gh pr merge "$BRANCH_NAME" --auto --squash --delete-branch
-          echo "Auto-merge enabled. PR will be merged once any required status checks pass."
+          # Delete the temp branch
+          git push origin --delete "$BRANCH_NAME" || true
 
-  notify-failure:
-    name: Notify on Failure
-    needs: [update-dependencies, test-starterkit-integration]
+  notify-success:
+    name: Notify Success (Slack)
+    needs: [update-dependencies, test-starterkit-integration, merge-to-main]
     if: |
       always() &&
       needs.update-dependencies.outputs.has_changes == 'true' &&
-      needs.test-starterkit-integration.result == 'failure'
+      needs.merge-to-main.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Dependencies Updated Successfully",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Repository:* ${{ github.repository }}\n*Date:* ${{ github.event.repository.updated_at || 'Today' }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Tests Passed:*\n• Unit tests (pest)\n• Static analysis (phpstan)\n• Starterkit integration\n• Frontend build\n• Homepage rendering"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Workflow Run"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    },
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Commits"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/commits/main"
+                    }
+                  ]
+                }
+              ]
+            }
+
+  notify-failure:
+    name: Notify Failure (Slack)
+    needs: [update-dependencies, test-starterkit-integration]
+    if: |
+      always() &&
+      needs.update-dependencies.outputs.has_changes == 'true' &&
+      (needs.test-starterkit-integration.result == 'failure' || needs.update-dependencies.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Dependency Update Failed",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Repository:* ${{ github.repository }}\n*Date:* ${{ github.event.repository.updated_at || 'Today' }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "The weekly dependency update failed during testing. Please review the workflow logs to identify which dependency caused the issue."
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Workflow Logs"
+                      },
+                      "style": "danger",
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+
       - name: Checkout for gh CLI
         uses: actions/checkout@v4
 
       - name: Create failure issue
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
-          BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -341,7 +435,6 @@ jobs:
           The weekly dependency update workflow failed during integration testing.
 
           ### Details
-          - **Branch**: \`${BRANCH_NAME}\`
           - **Workflow run**: ${RUN_URL}
           - **Date**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 
@@ -360,3 +453,29 @@ jobs:
             --title "Weekly dependency update failed ($(date +%Y-%m-%d))" \
             --body "$ISSUE_BODY" \
             --label "bug,dependencies"
+
+  notify-no-updates:
+    name: Notify No Updates (Slack)
+    needs: [update-dependencies]
+    if: needs.update-dependencies.outputs.has_changes == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*${{ github.repository }}*: No dependency updates available this week. All packages are up to date."
+                  }
+                }
+              ]
+            }
