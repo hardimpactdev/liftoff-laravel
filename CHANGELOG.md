@@ -2,6 +2,14 @@
 
 All notable changes to `Laravel` will be documented in this file.
 
+## v0.1.1 - 2026-01-08
+
+### Bug Fixes
+
+- Fixed HandleInertiaRequests middleware stub referencing non-existent HomeController route
+- Changed default navigation route to use DashboardController.show
+- Fixed typo in footer navigation: 'GitHewqub' → 'GitHub'
+
 ## v0.1.0 - Initial Release - 2026-01-07
 
 ### Initial Release
