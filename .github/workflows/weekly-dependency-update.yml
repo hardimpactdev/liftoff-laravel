@@ -11,6 +11,11 @@ on:
         required: false
         default: true
         type: boolean
+      auto_merge:
+        description: 'Auto-merge PR if all tests pass'
+        required: false
+        default: true
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -244,7 +249,7 @@ jobs:
           fi
 
   create-pull-request:
-    name: Create Pull Request
+    name: Create and Auto-merge Pull Request
     needs: [update-dependencies, test-starterkit-integration]
     if: |
       always() &&
@@ -289,12 +294,25 @@ jobs:
           EOF
           )
 
-          gh pr create \
+          PR_URL=$(gh pr create \
             --base main \
             --head "$BRANCH_NAME" \
             --title "chore(deps): weekly dependency update ($(date +%Y-%m-%d))" \
             --body "$PR_BODY" \
-            --label "dependencies"
+            --label "dependencies")
+
+          echo "Created PR: $PR_URL"
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+
+      - name: Enable auto-merge
+        if: github.event_name == 'schedule' || github.event.inputs.auto_merge == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
+        run: |
+          echo "Enabling auto-merge for PR..."
+          gh pr merge "$BRANCH_NAME" --auto --squash --delete-branch
+          echo "Auto-merge enabled. PR will be merged once any required status checks pass."
 
   notify-failure:
     name: Notify on Failure
