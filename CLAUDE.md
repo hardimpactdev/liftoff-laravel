@@ -352,3 +352,49 @@ When developing Setups:
 3. Verify all files are created in the correct locations
 4. Check that all replacements work correctly
 5. Ensure error cases are handled gracefully
+
+## CI/CD Workflows
+
+### GitHub Actions Workflows
+
+The package uses several GitHub Actions workflows for continuous integration and maintenance:
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `run-tests.yml` | Push (PHP files) | Matrix testing across PHP 8.3-8.4, Laravel 10-12 |
+| `integration-tests.yml` | Push to main, PRs | Tests scaffolding against liftoff-starterkit |
+| `phpstan.yml` | Push (PHP files) | Static analysis at level 5 |
+| `fix-php-code-style-issues.yml` | Push (PHP files) | Auto-fixes with Laravel Pint |
+| `dependabot-auto-merge.yml` | PR from Dependabot | Auto-merges minor/patch updates |
+| `weekly-dependency-update.yml` | Weekly (Sunday midnight UTC) | Full dependency update with integration testing |
+
+### Weekly Dependency Update Workflow
+
+The `weekly-dependency-update.yml` workflow runs every Sunday at midnight UTC and performs:
+
+1. **Dependency Updates**: Runs `composer update` to update all dependencies
+2. **Unit Tests**: Runs `pest --ci` to ensure tests still pass
+3. **Static Analysis**: Runs `phpstan` to check for type errors
+4. **Starterkit Integration Test**:
+   - Clones `liftoff-starterkit`, `waymaker`, and `laravel-toolbar`
+   - Configures composer to use the updated local package
+   - Runs `php artisan liftoff:setup app` (Auth + Dashboard)
+   - Updates Bun dependencies
+   - Builds frontend assets
+   - Verifies homepage returns HTTP 200
+5. **PR Creation**: If all tests pass, creates a PR with the updates
+6. **Failure Notification**: If tests fail, creates a GitHub issue for investigation
+
+**Manual Trigger**: The workflow can be triggered manually from the Actions tab with the option to enable/disable PR creation.
+
+### Required Secrets
+
+- `GH_PAT`: Personal Access Token with repo access for checking out private repositories and creating PRs/issues
+
+### Dependabot Configuration
+
+Dependabot is configured to check weekly for:
+- GitHub Actions updates
+- Composer dependency updates
+
+Minor and patch updates are auto-merged when CI passes.

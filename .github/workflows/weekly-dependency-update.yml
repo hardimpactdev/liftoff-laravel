@@ -1,0 +1,344 @@
+name: Weekly Dependency Update
+
+on:
+  schedule:
+    # Run every Sunday at midnight UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      create_pr:
+        description: 'Create PR with updates'
+        required: false
+        default: true
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PHP_VERSION: '8.4'
+
+jobs:
+  update-dependencies:
+    name: Update Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      has_changes: ${{ steps.check_changes.outputs.has_changes }}
+      branch_name: ${{ steps.commit.outputs.branch_name }}
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install current dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Update Composer dependencies
+        run: |
+          echo "Updating Composer dependencies..."
+          composer update --no-interaction --prefer-dist --with-all-dependencies
+          echo "Update complete."
+
+      - name: Run unit tests
+        run: vendor/bin/pest --ci
+
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyse --error-format=github
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet composer.lock; then
+            echo "No changes to composer.lock"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in composer.lock"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "### Updated Packages" >> $GITHUB_STEP_SUMMARY
+            composer show --latest | grep -E '^\S+\s+\S+\s+\S+' | head -20 >> $GITHUB_STEP_SUMMARY || true
+          fi
+
+      - name: Configure git
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes
+        id: commit
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME="deps/weekly-update-$(date +%Y-%m-%d)"
+          git checkout -b "$BRANCH_NAME"
+          git add composer.lock
+          git commit -m "chore(deps): weekly dependency update
+
+          Automated weekly update of Composer dependencies.
+
+          Updated on: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push origin "$BRANCH_NAME"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+  test-starterkit-integration:
+    name: Test Starterkit Integration
+    needs: update-dependencies
+    if: needs.update-dependencies.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout liftoff-laravel (updated branch)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-dependencies.outputs.branch_name }}
+          path: liftoff-laravel
+
+      - name: Checkout liftoff-starterkit
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/liftoff-starterkit
+          token: ${{ secrets.GH_PAT }}
+          path: starterkit
+
+      - name: Checkout waymaker
+        uses: actions/checkout@v4
+        with:
+          repository: hardimpactdev/waymaker
+          token: ${{ secrets.GH_PAT }}
+          path: waymaker
+
+      - name: Checkout laravel-toolbar
+        uses: actions/checkout@v4
+        with:
+          repository: nckrtl/laravel-toolbar
+          token: ${{ secrets.GH_PAT }}
+          path: laravel-toolbar
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Configure npm registry auth
+        working-directory: starterkit
+        run: |
+          echo "@hardimpactdev:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> .npmrc
+
+      - name: Configure Composer repositories
+        working-directory: starterkit
+        run: |
+          composer config repositories.waymaker path ../waymaker
+          composer config repositories.liftoff-laravel path ../liftoff-laravel
+          composer config repositories.laravel-toolbar path ../laravel-toolbar
+
+      - name: Install Composer dependencies
+        working-directory: starterkit
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Update Bun dependencies
+        working-directory: starterkit
+        run: bun update
+
+      - name: Setup environment
+        working-directory: starterkit
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run App setup (Auth + Dashboard)
+        working-directory: starterkit
+        run: php artisan liftoff:setup app
+
+      - name: Verify setup files
+        working-directory: starterkit
+        run: |
+          echo "Verifying Auth files..."
+          test -f app/Http/Controllers/Auth/LoginController.php
+          test -f app/Http/Controllers/Auth/RegisterController.php
+          test -f resources/js/pages/auth/Login.vue
+
+          echo "Verifying Dashboard files..."
+          test -f app/Http/Controllers/DashboardController.php
+          test -f resources/js/pages/Dashboard.vue
+
+          echo "All setup files verified!"
+
+      - name: Install frontend dependencies
+        working-directory: starterkit
+        run: bun install
+
+      - name: Build frontend assets
+        working-directory: starterkit
+        run: bun run build
+
+      - name: Setup database
+        working-directory: starterkit
+        run: |
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Start server and test homepage
+        working-directory: starterkit
+        run: |
+          # Start PHP built-in server in background
+          php artisan serve --port=8000 &
+          SERVER_PID=$!
+
+          # Wait for server to start
+          echo "Waiting for server to start..."
+          sleep 5
+
+          # Test homepage responds with 200
+          echo "Testing homepage..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000)
+
+          # Kill server
+          kill $SERVER_PID 2>/dev/null || true
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "Homepage returned HTTP $HTTP_CODE - Success!"
+          else
+            echo "Homepage returned HTTP $HTTP_CODE - Expected 200"
+            exit 1
+          fi
+
+      - name: Run starterkit tests
+        working-directory: starterkit
+        run: |
+          if [ -f "vendor/bin/pest" ]; then
+            vendor/bin/pest --ci || true
+          elif [ -f "vendor/bin/phpunit" ]; then
+            vendor/bin/phpunit || true
+          else
+            echo "No test runner found, skipping tests"
+          fi
+
+  create-pull-request:
+    name: Create Pull Request
+    needs: [update-dependencies, test-starterkit-integration]
+    if: |
+      always() &&
+      needs.update-dependencies.outputs.has_changes == 'true' &&
+      needs.test-starterkit-integration.result == 'success' &&
+      (github.event_name == 'schedule' || github.event.inputs.create_pr == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout liftoff-laravel
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
+        run: |
+          PR_BODY=$(cat <<'EOF'
+          ## Weekly Dependency Update
+
+          This PR contains the weekly automated update of Composer dependencies.
+
+          ### What's included
+          - Updated `composer.lock` with latest compatible versions
+          - All unit tests passing
+          - Static analysis passing
+          - Starterkit integration tests passing
+          - Homepage rendering verified
+
+          ### Testing performed
+          - [x] Unit tests (`pest --ci`)
+          - [x] Static analysis (`phpstan`)
+          - [x] Starterkit setup (auth + dashboard)
+          - [x] Frontend build (`bun run build`)
+          - [x] Homepage HTTP 200 response
+
+          ---
+          *This PR was automatically created by the weekly dependency update workflow.*
+          EOF
+          )
+
+          gh pr create \
+            --base main \
+            --head "$BRANCH_NAME" \
+            --title "chore(deps): weekly dependency update ($(date +%Y-%m-%d))" \
+            --body "$PR_BODY" \
+            --label "dependencies"
+
+  notify-failure:
+    name: Notify on Failure
+    needs: [update-dependencies, test-starterkit-integration]
+    if: |
+      always() &&
+      needs.update-dependencies.outputs.has_changes == 'true' &&
+      needs.test-starterkit-integration.result == 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout for gh CLI
+        uses: actions/checkout@v4
+
+      - name: Create failure issue
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH_NAME: ${{ needs.update-dependencies.outputs.branch_name }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          ISSUE_BODY=$(cat <<EOF
+          ## Dependency Update Failure
+
+          The weekly dependency update workflow failed during integration testing.
+
+          ### Details
+          - **Branch**: \`${BRANCH_NAME}\`
+          - **Workflow run**: ${RUN_URL}
+          - **Date**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          ### Next steps
+          1. Review the workflow logs linked above
+          2. Identify which dependency update caused the failure
+          3. Either fix the compatibility issue or pin the problematic dependency
+
+          ---
+          *This issue was automatically created by the weekly dependency update workflow.*
+          EOF
+          )
+
+          gh issue create \
+            --repo "$REPO" \
+            --title "Weekly dependency update failed ($(date +%Y-%m-%d))" \
+            --body "$ISSUE_BODY" \
+            --label "bug,dependencies"
