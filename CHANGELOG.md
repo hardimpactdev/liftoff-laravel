@@ -2,6 +2,14 @@
 
 All notable changes to `Laravel` will be documented in this file.
 
+## 0.1.6 - 2026-01-16
+
+### Maintenance
+
+- Removed "v" prefix from version tags for cleaner Composer versioning (use `0.1.6` instead of `v0.1.6`)
+
+**Full Changelog**: https://github.com/hardimpactdev/craft-laravel/compare/v0.1.5...0.1.6
+
 ## v0.1.5 - 2026-01-15
 
 ### Maintenance
