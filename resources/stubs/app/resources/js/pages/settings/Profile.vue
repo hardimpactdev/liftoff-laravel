@@ -8,9 +8,9 @@ import {
     InputError,
     DeleteUser,
     HeadingSmall,
-    AppLayout,
+    AppSidebarLayout,
     SettingsLayout,
-} from "@hardimpactdev/craft-vue";
+} from "@hardimpactdev/craft-ui";
 import { type BreadcrumbItem, type SharedData, type User } from "@/types";
 
 interface Props {
@@ -43,7 +43,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppSidebarLayout :breadcrumbs="breadcrumbs">
         <Head title="Profile settings" />
 
         <SettingsLayout>
@@ -129,5 +129,5 @@ const submit = () => {
                 :route="Controllers.Settings.ProfileController.destroy()"
             />
         </SettingsLayout>
-    </AppLayout>
+    </AppSidebarLayout>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ConfirmPasswordPage, type ConfirmPasswordForm } from "@hardimpactdev/craft-vue";
+import { ConfirmPasswordPage, type ConfirmPasswordForm } from "@hardimpactdev/craft-ui";
 
 const form = useForm<ConfirmPasswordForm>({
     password: "",

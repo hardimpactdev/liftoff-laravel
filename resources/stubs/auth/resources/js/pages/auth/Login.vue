@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LoginPage, type LoginForm } from "@hardimpactdev/craft-vue";
+import { LoginPage, type LoginForm } from "@hardimpactdev/craft-ui";
 
 defineProps<{
     status?: string;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ResetPasswordPage, type ResetPasswordForm } from "@hardimpactdev/craft-vue";
+import { ResetPasswordPage, type ResetPasswordForm } from "@hardimpactdev/craft-ui";
 
 const props = defineProps<{
     token: string;

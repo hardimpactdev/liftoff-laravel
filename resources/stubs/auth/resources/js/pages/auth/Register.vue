@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RegisterPage, type RegisterForm } from "@hardimpactdev/craft-vue";
+import { RegisterPage, type RegisterForm } from "@hardimpactdev/craft-ui";
 
 const form = useForm<RegisterForm>({
     name: "",

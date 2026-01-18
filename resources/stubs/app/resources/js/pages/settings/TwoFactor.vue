@@ -4,8 +4,8 @@ import {
     Button,
     HeadingSmall,
     SettingsLayout,
-    AppLayout,
-} from "@hardimpactdev/craft-vue";
+    AppSidebarLayout,
+} from "@hardimpactdev/craft-ui";
 import { ShieldBan, ShieldCheck, LoaderCircle } from "lucide-vue-next";
 import { onUnmounted, ref } from "vue";
 import TwoFactorRecoveryCodes from "@/components/TwoFactorRecoveryCodes.vue";
@@ -83,7 +83,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <AppSidebarLayout :breadcrumbs="breadcrumbItems">
         <Head title="Two-Factor Authentication" />
 
         <h1 class="sr-only">Two-Factor Authentication Settings</h1>
@@ -169,5 +169,5 @@ onUnmounted(() => {
                 />
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </AppSidebarLayout>
 </template>

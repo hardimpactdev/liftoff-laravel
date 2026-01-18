@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VerifyEmailPage } from "@hardimpactdev/craft-vue";
+import { VerifyEmailPage } from "@hardimpactdev/craft-ui";
 
 defineProps<{
     status?: string;

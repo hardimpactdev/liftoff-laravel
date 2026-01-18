@@ -6,8 +6,8 @@ import {
     InputError,
     Label,
     SettingsLayout,
-    AppLayout,
-} from "@hardimpactdev/craft-vue";
+    AppSidebarLayout,
+} from "@hardimpactdev/craft-ui";
 import { ref } from "vue";
 import { type BreadcrumbItem } from "@/types";
 
@@ -51,7 +51,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <AppSidebarLayout :breadcrumbs="breadcrumbItems">
         <Head title="Password settings" />
 
         <SettingsLayout>
@@ -129,5 +129,5 @@ const updatePassword = () => {
                 </form>
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </AppSidebarLayout>
 </template>

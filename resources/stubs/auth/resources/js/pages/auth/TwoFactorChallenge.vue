@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TwoFactorChallengePage, type TwoFactorForm, type TwoFactorRecoveryForm } from "@hardimpactdev/craft-vue";
+import { TwoFactorChallengePage, type TwoFactorForm, type TwoFactorRecoveryForm } from "@hardimpactdev/craft-ui";
 
 const form = useForm({
     code: "",

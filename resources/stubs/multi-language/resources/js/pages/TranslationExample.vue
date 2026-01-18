@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLanguage } from "@hardimpactdev/craft-vue";
+import { useLanguage } from "@hardimpactdev/craft-ui";
 
 const { updateLanguage } = useLanguage();
 </script>

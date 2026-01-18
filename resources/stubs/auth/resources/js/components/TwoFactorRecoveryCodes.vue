@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@hardimpactdev/craft-vue";
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@hardimpactdev/craft-ui";
 import { Eye, EyeOff, LockKeyhole, RefreshCw, LoaderCircle } from "lucide-vue-next";
 import { nextTick, onMounted, ref, useTemplateRef } from "vue";
 import { useTwoFactorAuth } from "@/composables/useTwoFactorAuth";

@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
     InputError,
-} from "@hardimpactdev/craft-vue";
+} from "@hardimpactdev/craft-ui";
 import { useClipboard } from "@vueuse/core";
 import { Check, Copy, ScanLine, LoaderCircle } from "lucide-vue-next";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";

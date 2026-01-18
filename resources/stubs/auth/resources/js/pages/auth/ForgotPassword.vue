@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ForgotPasswordPage, type ForgotPasswordForm } from "@hardimpactdev/craft-vue";
+import { ForgotPasswordPage, type ForgotPasswordForm } from "@hardimpactdev/craft-ui";
 
 defineProps<{
     status?: string;
