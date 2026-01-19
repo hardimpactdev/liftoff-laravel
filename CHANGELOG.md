@@ -2,6 +2,18 @@
 
 All notable changes to `Laravel` will be documented in this file.
 
+## 0.1.9 - 2026-01-19
+
+### Changes
+
+- fix: exclude stubs from pint (resolves parse errors)
+- fix: support PHP 8.3+
+- fix: drop Laravel 10 support (incompatible with pest-plugin-laravel 3)
+
+### Auth Scaffolder
+
+- Auth scaffolder now better works in new projects
+
 ## 0.1.8 - 2026-01-19
 
 refactor: update stubs to use useAppNavigation composable
