@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { AppSidebarLayout, PlaceholderPattern } from "@hardimpactdev/craft-ui";
+import { AppSidebarLayout, PlaceholderPattern, useAppNavigation } from "@hardimpactdev/craft-ui";
 import { type BreadcrumbItem } from "@/types";
+
+const appNav = useAppNavigation();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 <template>
     <Head title="Dashboard" />
 
-    <AppSidebarLayout :breadcrumbs="breadcrumbs">
+    <AppSidebarLayout :breadcrumbs="breadcrumbs" v-bind="appNav">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
 
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">

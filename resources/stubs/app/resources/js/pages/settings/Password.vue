@@ -7,9 +7,12 @@ import {
     Label,
     SettingsLayout,
     AppSidebarLayout,
+    useAppNavigation,
 } from "@hardimpactdev/craft-ui";
 import { ref } from "vue";
 import { type BreadcrumbItem } from "@/types";
+
+const appNav = useAppNavigation();
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -51,7 +54,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <AppSidebarLayout :breadcrumbs="breadcrumbItems">
+    <AppSidebarLayout :breadcrumbs="breadcrumbItems" v-bind="appNav">
         <Head title="Password settings" />
 
         <SettingsLayout>

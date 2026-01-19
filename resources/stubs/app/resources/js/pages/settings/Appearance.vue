@@ -4,8 +4,11 @@ import {
     AppearanceTabs,
     AppSidebarLayout,
     SettingsLayout,
+    useAppNavigation,
 } from "@hardimpactdev/craft-ui";
 import { type BreadcrumbItem } from "@/types";
+
+const appNav = useAppNavigation();
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -16,7 +19,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 </script>
 
 <template>
-    <AppSidebarLayout :breadcrumbs="breadcrumbItems">
+    <AppSidebarLayout :breadcrumbs="breadcrumbItems" v-bind="appNav">
         <Head title="Appearance settings" />
 
         <SettingsLayout>

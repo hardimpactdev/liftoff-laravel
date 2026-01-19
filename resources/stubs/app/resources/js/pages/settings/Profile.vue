@@ -10,6 +10,7 @@ import {
     HeadingSmall,
     AppSidebarLayout,
     SettingsLayout,
+    useAppNavigation,
 } from "@hardimpactdev/craft-ui";
 import { type BreadcrumbItem, type SharedData, type User } from "@/types";
 
@@ -29,6 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const page = usePage<SharedData>();
 const user = page.props.auth.user as User;
+const appNav = useAppNavigation();
 
 const form = useForm({
     name: user.name,
@@ -43,7 +45,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AppSidebarLayout :breadcrumbs="breadcrumbs">
+    <AppSidebarLayout :breadcrumbs="breadcrumbs" v-bind="appNav">
         <Head title="Profile settings" />
 
         <SettingsLayout>
