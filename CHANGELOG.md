@@ -2,6 +2,18 @@
 
 All notable changes to `Laravel` will be documented in this file.
 
+## 0.2.0 - 2026-01-19
+
+### Breaking Changes
+
+- **Laravel 12 only** - Dropped support for Laravel 10 and 11
+- Requires PHP 8.3+
+
+### Changes
+
+- Simplified dependency matrix
+- Auth scaffolder improvements for new projects
+
 ## 0.1.9 - 2026-01-19
 
 ### Changes
